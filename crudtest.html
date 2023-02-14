@@ -1,0 +1,89 @@
+<html>
+    <h1>Product list</h1>
+    <body>
+        <form onsubmit="saveToLocalStorage(event)">
+            <label>prodcut name</label>
+            <input type="text" name="Productname"  required>
+            
+            <label>selling price </label>
+            <input type="number"  name="sellingprice">
+            <button>Add Product</button>
+           
+        </form>
+        <ul id="listOfitems"></ul>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.3/axios.min.js"></script>
+        <script> function saveToLocalStorage(event){
+            event.preventDefault();
+           const  Productname = event.target.Productname.value;
+          
+           const  sellingprice= event.target.sellingprice.value;
+         
+           const obj ={
+            Productname,
+            
+            sellingprice
+           }
+           
+           axios.post("https://crudcrud.com/api/33dc142ce07c4082a4854cb4641c8520/appintmentData", obj)
+
+           .then((response) => {
+            showUserOnScreen(response.data)
+            console.log(response)
+           })
+           .catch((err) =>
+           {
+            console.log(err)
+           })
+
+           // localStorage.setItem(obj.email,JSON.stringify(obj));
+           //showUserOnScreen(obj)
+
+
+
+        }
+       
+       // window.addEventListener("DOMContentLoaded" , () =>{
+         //   axios.get("https://crudcrud.com/api/33dc142ce07c4082a4854cb4641c8520/appintmentData")
+           // .then((response) =>{
+             //   console.log(response)
+              //  for(var i=0;i<response.data.length;i++){
+                  //  showUserOnScreen(response.data[i])
+             //   }
+          //  })
+          //  .catch((response) =>{
+               // console.log(err)
+         //   })
+
+       // })
+
+
+
+        function showUserOnScreen(obj)
+        { 
+        const parentElem = document.getElementById('listOfitems')
+        const childElem = document.createElement('li')
+                childElem.textContent = obj.Productname + ' - ' + obj.sellingprice 
+            parentElem.appendChild(childElem) 
+        
+          
+
+        const deletebtn=document.createElement('input')
+        deletebtn.type="button"
+        deletebtn.value="Delete product"
+        deletebtn.onclick=() =>{
+            
+            localStorage.removeItem(obj.Productname)
+           parentElem.removeChild(childElem)
+
+        }
+       
+
+        
+        childElem.appendChild(deletebtn)
+        
+        parentElem.appendChild(childElem)
+    }
+        
+        </script>
+    </body>
+</html>
